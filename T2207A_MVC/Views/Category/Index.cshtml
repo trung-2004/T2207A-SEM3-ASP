@@ -1,0 +1,42 @@
+﻿
+@model List<T2207A_MVC.Entities.Category>
+@{
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>List product</h1>
+        </div>
+        <div class="col-lg-6">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary float-end">Add Category</a>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.id</th>
+                            <td>@item.name</td>
+                            <td>
+                                <a class="me-2" asp-controller="Category" asp-action="Edit"><i class="fa-regular fa-pen-to-square"></i></a>
+                                <a asp-controller="Category" asp-action=""><i class="fa-solid fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
