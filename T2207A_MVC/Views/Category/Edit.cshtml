@@ -1,19 +1,28 @@
 ﻿@page
-@model T2207A_MVC.Views.Category.EditModel
+@model T2207A_MVC.Models.CategoryEditModel
 @{
 }
 <div class="container">
     <h1>Update Category</h1>
+    <h5>Edit Category: </h5>
     <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-4">
-            <form>
+            @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+            {
+                @Html.HiddenFor(m=>m.id)
                 <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter Name">
+                    @Html.LabelFor(m=>m.name)
+                    @Html.TextBoxFor(m=>m.name, new {@class="form-control", placeholder = "Enter Name"})
+                    @Html.ValidationMessageFor(m=>m.name, "", new {@class="text-danger"})
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            }
+            <div class="mb-3">
+                @Html.ActionLink("Back to List", "Index")
+            </div>
         </div>
         <div class="col-lg-4"></div>
     </div>

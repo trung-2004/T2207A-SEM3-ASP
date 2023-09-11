@@ -1,5 +1,5 @@
 ﻿@page
-@model T2207A_MVC.Views.Brand.CreateModel
+@model T2207A_MVC.Models.BrandViewModel
 @{
 }
 <div class="container">
@@ -7,13 +7,17 @@
     <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-4">
-            <form>
+            @using (Html.BeginForm("Create", "Brand", FormMethod.Post))
+            {
                 <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter Name">
+                    @Html.LabelFor(m=>m.name)
+                    @Html.TextBoxFor(m=>m.name, new {@class="form-control"})
+                    @Html.ValidationMessageFor(m=>m.name, "", new {@class="text-danger"})
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
-            </form>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            }
         </div>
         <div class="col-lg-4"></div>
     </div>

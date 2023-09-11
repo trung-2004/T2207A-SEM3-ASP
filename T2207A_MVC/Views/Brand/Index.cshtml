@@ -29,8 +29,8 @@
                             <th scope="row">@item.id</th>
                             <td>@item.name</td>
                             <td>
-                                <a class="me-2" asp-controller="Brand" asp-action="Edit"><i class="fa-regular fa-pen-to-square"></i></a>
-                                <a asp-controller="Brand" asp-action=""><i class="fa-solid fa-trash"></i></a>
+                                <a class="me-2" href="@Url.ActionLink("Edit", "Brand", new {id=item.id})"><i class="fa-regular fa-pen-to-square"></i></a>
+                                <a onclick="return confirm('Ban muon xoa danh muc @item.name')" href="@Url.ActionLink("Delete", "Brand", new {id=item.id})"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     }
