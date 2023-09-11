@@ -1,0 +1,12 @@
+﻿@page
+@model T2207A_MVC.Views.Upload.IndexModel
+@{
+}
+@using(Html.BeginForm(FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div class="mb-3">
+        <label class="form-label">Upload</label>
+        <input type="file" name="image" class="form-control" placeholder="Enter Image">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+}

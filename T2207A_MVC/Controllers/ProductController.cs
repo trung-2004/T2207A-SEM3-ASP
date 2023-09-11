@@ -21,6 +21,12 @@ namespace T2207A_MVC.Controllers
         public IActionResult Index()
         {
             var products = _context.Products.Include(p => p.category).Include(p => p.brand).ToList();
+            // Where(p=>p.name.Equals("Samsung")) : baif toasn timf kiem
+            // Where(p=>p.name.Contains("Samsung")) || p.name.Contains : timf kiem nhung sp co ten la samsung iphone
+            // Take(10) : lay 10 sp
+            // Skip(10) : bo 10 sp
+            // OrderBy(p=>p.name) : asc
+            // OrderByDescending(p=>p.name) : desc
             return View(products);
         }
 
@@ -119,6 +125,11 @@ namespace T2207A_MVC.Controllers
             _context.Products.Remove(product);
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Upload()
+        {
+            return View();
         }
     }
 }
