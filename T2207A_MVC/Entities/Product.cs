@@ -17,6 +17,9 @@ namespace T2207A_MVC.Entities
         [Required]
         public double price { get; set; }
 
+        [Required]
+        public string image { get; set; }
+
         [Column(TypeName = "text")] // khai bao kieu du lieu
         public string description { get; set; }
 

@@ -19,6 +19,11 @@
                     @Html.ValidationMessageFor(m=>m.name, "", new {@class="text-danger"})
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Image</label>
+                    <input type="file" name="image" class="form-control" placeholder="Enter Image">
+                    @Html.ValidationMessageFor(m=>m.image, "", new {@class="text-danger"})
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Description</label>
                     <textarea type="text" name="description" class="form-control"
                               placeholder="Description"></textarea>

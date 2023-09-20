@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using T2207A_MVC.Entities;
 using T2207A_MVC.Models.Product;
+using T2207A_MVC.Controllers;
 
 namespace T2207A_MVC.Controllers
 {
@@ -44,6 +45,7 @@ namespace T2207A_MVC.Controllers
         [HttpPost]
         public IActionResult Create(ProductViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Products.Add(new Product { 

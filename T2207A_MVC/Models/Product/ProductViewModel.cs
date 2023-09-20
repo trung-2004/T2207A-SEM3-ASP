@@ -15,6 +15,9 @@ namespace T2207A_MVC.Models.Product
         [Display(Name = "Price")]
         public double price { get; set; }
 
+        [Required(ErrorMessage = "Vui long chon danh muc")]
+        [Display(Name = "Image")]
+        public string image { get; set; }
 
         [Column(TypeName = "text")]
         [Display(Name = "Description")]
