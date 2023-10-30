@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using T2207A_API.Entities;
 using T2207A_API.DTOs;
 using T2207A_API.Models.Category;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,9 +24,10 @@ namespace T2207A_API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            List<Category> categories = _context.Categories.ToList();
+            List<Category> categories = _context.Categories.Where(c => c.DeletedAt == null).ToList();
 
             List<CategoryDTO> data = new List<CategoryDTO>();
             foreach (Category c in categories)
@@ -62,7 +64,7 @@ namespace T2207A_API.Controllers
             {   
                 try
                 {
-                    Category data = new Category { Name = model.name };
+                    Category data = new Category { Name = model.name  };
                     _context.Categories.Add(data);
                     _context.SaveChanges();
                     return Created($"get-by-id?id={data.Id}", new CategoryDTO { id = data.Id, name = data.Name });
@@ -101,15 +103,15 @@ namespace T2207A_API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                Category category = _context.Categories.Find(id);
+                Category category = await _context.Categories.FindAsync(id);
                 if (category == null)
                     return NotFound();
                 _context.Categories.Remove(category);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return NoContent();
             }
             catch (Exception e)

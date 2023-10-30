@@ -25,7 +25,46 @@ public partial class T2207aApiContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
+
+    public override int SaveChanges()
+    {
+        foreach(var entry in ChangeTracker.Entries())
+        {
+            var entity = entry.Entity;
+            if(entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+
+                entity.GetType().GetProperty("DeletedAt").SetValue(entity, DateTime.Now);
+            }
+        }
+        return base.SaveChanges();
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            var entity = entry.Entity;
+            if (entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+
+                // Đảm bảo DeletedAt property tồn tại trước khi cố gắng gán giá trị.
+                var deletedAtProperty = entity.GetType().GetProperty("DeletedAt");
+                if (deletedAtProperty != null)
+                {
+                    deletedAtProperty.SetValue(entity, DateTime.Now);
+                }
+            }
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -65,6 +104,9 @@ public partial class T2207aApiContext : DbContext
             entity.HasIndex(e => e.Name, "UQ__categori__72E12F1B6D0A6187").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DeletedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("deleted_at");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -171,6 +213,20 @@ public partial class T2207aApiContext : DbContext
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__products__catego__164452B1");
+        });
+
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__RefreshT__3214EC07241C090B");
+
+            entity.ToTable("RefreshToken");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.User).WithMany(p => p.RefreshTokens)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__RefreshTo__UserI__3A81B327");
         });
 
         modelBuilder.Entity<User>(entity =>
